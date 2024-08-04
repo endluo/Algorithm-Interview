@@ -5,13 +5,17 @@
 
     
 2.题目二：
+
     1）实现过程
        （1）按段落存储PDF文件
        （2）使用 SentenceTransformer 模型将提取的段落转换为嵌入向量
        （3）使用 Faiss 创建索引
+       
     2）最终结果：
-    Based on the context, the following tricks are used when training PP-YOLO:
+
+
     
+    Based on the context, the following tricks are used when training PP-YOLO:
     1. DropBlock: This is a trick that replaces the original DropBlock with a new branch that adds additional computational cost but improves the performance of the detector.
     
     2. Grid Sensitive: This is a trick that uses a grid-sensitive approach to improve the performance of the detector.
