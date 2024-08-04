@@ -40,4 +40,4 @@ class BombDetonation:
 if __name__ == '__main__':
     bombs = [[1, 2, 3], [2, 3, 1], [3, 4, 2], [4, 5, 3], [5, 6, 4]]
     detonation = BombDetonation(bombs)
-    print(detonation.maximum_detonation())  # Output: 5
+    print(detonation.maximum_detonation())  
