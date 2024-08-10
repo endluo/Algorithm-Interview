@@ -6,7 +6,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
 from accelerate import infer_auto_device_map, init_empty_weights
 import warnings
-
+import pickle
 # 忽略所有的UserWarning
 warnings.filterwarnings('ignore', category=UserWarning)
 
@@ -62,7 +62,31 @@ class PDFKnowledgeBase:
         D, I = self.index.search(query_embedding, k)
         return [self.paragraphs[i] for i in I[0]]
 
+    def save_embeddings_and_index(self, embedding_file='embeddings.npy', index_file='faiss_index.index'):
+        # 保存嵌入到文件
+        np.save(embedding_file, self.paragraph_embeddings)
+        # 保存FAISS索引到文件
+        faiss.write_index(self.index, index_file)
+        
+    def load_embeddings_and_index(self, embedding_file='embeddings.npy', index_file='faiss_index.index'):
+        # 从文件加载嵌入
+        self.paragraph_embeddings = np.load(embedding_file)
+        # 从文件加载FAISS索引
+        self.index = faiss.read_index(index_file)
+        # 根据加载的嵌入重新创建段落列表
+        # 这假设你已经有一个方法来重新生成段落列表（或保存段落）
+        self.paragraphs = self._load_paragraphs()
 
+    def _load_paragraphs(self, paragraphs_file='paragraphs.pkl'):
+        # 从文件中加载段落
+        with open(paragraphs_file, 'rb') as f:
+            paragraphs = pickle.load(f)
+        return paragraphs
+
+    def save_paragraphs(self, paragraphs_file='paragraphs.pkl'):
+        # 保存段落到文件
+        with open(paragraphs_file, 'wb') as f:
+            pickle.dump(self.paragraphs, f)
 class QwenModel:
     def __init__(self, model_name="Qwen/Qwen2-0.5B", device="cuda"):
         self.device = device
@@ -114,6 +138,15 @@ if __name__ == '__main__':
     knowledge_base = PDFKnowledgeBase(pdf_path)
     retrieved_paragraphs = knowledge_base.search_paragraphs(query)
 
+    # 保存嵌入和FAISS索引
+    knowledge_base.save_embeddings_and_index()
+    knowledge_base.save_paragraphs()
+    
+    # 加载嵌入和FAISS索引
+    # 你可以创建一个新的对象来加载保存的数据
+    knowledge_base_loaded = PDFKnowledgeBase(pdf_path)
+    knowledge_base_loaded.load_embeddings_and_index()
+    
     # 使用Cross-Encoder模型进行重新排序
     re_ranker_model = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2')
     top_paragraphs = re_rank_retrieved_paragraphs(query, retrieved_paragraphs, re_ranker_model)
