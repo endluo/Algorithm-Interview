@@ -146,7 +146,7 @@ if __name__ == '__main__':
     # 你可以创建一个新的对象来加载保存的数据
     knowledge_base_loaded = PDFKnowledgeBase(pdf_path)
     knowledge_base_loaded.load_embeddings_and_index()
-    
+    #retrieved_paragraphs = knowledge_base_loaded.search_paragraphs(query)
     # 使用Cross-Encoder模型进行重新排序
     re_ranker_model = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2')
     top_paragraphs = re_rank_retrieved_paragraphs(query, retrieved_paragraphs, re_ranker_model)
