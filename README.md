@@ -1,12 +1,5 @@
 # Algorithm-Interview
-1.题目一：
-
-    主要利用图的构建和深度优先搜索（DFS）来计算最大爆炸数目
-
-
-    
-2.题目二：
-
+大模型RAG流程：
     1）实现过程
        （1）按段落存储PDF文件,通过size大小只保存正文
        （2）使用 SentenceTransformer 模型将提取的段落转换为嵌入向量
