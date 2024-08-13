@@ -1,5 +1,7 @@
 # Algorithm-Interview
+
 大模型RAG流程：
+
     1）实现过程
        （1）按段落存储PDF文件,通过size大小只保存正文
        （2）使用 SentenceTransformer 模型将提取的段落转换为嵌入向量
