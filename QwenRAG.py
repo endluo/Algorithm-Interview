@@ -74,7 +74,7 @@ class PDFKnowledgeBase:
         # 从文件加载FAISS索引
         self.index = faiss.read_index(index_file)
         # 根据加载的嵌入重新创建段落列表
-        # 这假设你已经有一个方法来重新生成段落列表（或保存段落）
+        # 重新生成段落列表（或保存段落）
         self.paragraphs = self._load_paragraphs()
 
     def _load_paragraphs(self, paragraphs_file='paragraphs.pkl'):
@@ -143,7 +143,7 @@ if __name__ == '__main__':
     knowledge_base.save_paragraphs()
     
     # 加载嵌入和FAISS索引
-    # 你可以创建一个新的对象来加载保存的数据
+    # 创建一个新的对象来加载保存的数据
     knowledge_base_loaded = PDFKnowledgeBase(pdf_path)
     knowledge_base_loaded.load_embeddings_and_index()
     #retrieved_paragraphs = knowledge_base_loaded.search_paragraphs(query)
